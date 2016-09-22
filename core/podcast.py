@@ -41,6 +41,12 @@ class Podcast:
         else:
             return self.episodes[0]
 
+    def getEpisodes(self):
+        if self.numEpisodes == 0:
+            return 0
+        else:
+            return self.episodes
+
     """ def updateFeed(self): """
 
 def main():
