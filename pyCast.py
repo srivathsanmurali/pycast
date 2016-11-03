@@ -22,5 +22,4 @@ from core import podcast
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="pyCast 0.0.1")
 
-    if arguments['podcast'] and arguments['add']:
-        print "podcast add", arguments['<url>']
+    #if arguments['podcast'] and arguments['add']:

@@ -1,7 +1,9 @@
 import feedparser
 from collections import namedtuple
+
 """ Episode - stores information about each episode"""
-Episode = namedtuple ("Episode", "title, notes, url, pubDate")
+Episode = namedtuple ("Episode", "title, notes, url, pubDate, played, curPosition")
+
 class Podcast:
     """ Podcast - a simple class that represents the data for each podcast
     """
@@ -21,7 +23,7 @@ class Podcast:
                     """ also check if the enclosure
                         contains a mp3 url"""
                     if len(eps.enclosures) >0:
-                        self.episodes[self.numEpisodes] = Episode(eps.title, eps.description, eps.enclosures[0].url, eps.updated_parsed)
+                        self.episodes[self.numEpisodes] = Episode(eps.title, eps.description, eps.enclosures[0].url, eps.updated_parsed, False, 0.0)
                         self.numEpisodes = self.numEpisodes + 1
             self.pubDate = podFeed.feed.updated_parsed
 
@@ -51,8 +53,6 @@ class Podcast:
 
 def main():
     swak = Podcast("http://feeds.feedburner.com/swak")
-    print swak.getEpisodeDetails(200)
-    print swak.getLastEpisode()
 
 if __name__ == "__main__":
     main()
