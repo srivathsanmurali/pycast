@@ -3,12 +3,13 @@
     Author: srivathsan (sri@vathsan.com)
 
 Usage:
-    pyCast.py add <url> <shortname>
-    pyCast.py list
-    pyCast.py show <shortname>
-    pyCast.py play
-    pyCast.py -h | --help
-    pyCast.py -v | --version
+    pyCast add <url> <shortname>
+    pyCast remove <shortname>
+    pyCast list
+    pyCast show <shortname>
+    pyCast play
+    pyCast -h | --help
+    pyCast -v | --version
 
 Options:
     -h --help       Show this message.
@@ -17,7 +18,14 @@ Options:
 """
 
 from docopt import docopt
-from podcast import Podcast
+from podcastManager import PodcastManager
 
 if __name__ == "__main__":
-    arguments = docopt(__doc__, version="pyCast 0.0.1")
+    args = docopt(__doc__, version="pyCast 0.0.1")
+    pm = PodcastManager()
+    if args['add'] and args['<shortname>'] and args['<url>']:
+        pm.add(args['<url>'], args['<shortname>'])
+    elif args['remove'] and args['<shortname>']:
+        pm.remove(args['<shortname>'])
+    elif args['list']:
+        pm.list()

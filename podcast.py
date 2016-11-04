@@ -50,6 +50,7 @@ class Podcast:
             return self.episodes
 
     """ def updateFeed(self): """
+    """ def saveToDist(self): """
 
 def main():
     swak = Podcast("http://feeds.feedburner.com/swak")

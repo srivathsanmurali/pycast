@@ -30,3 +30,34 @@ class PodcastManager:
         config = yaml.load(infile)
         self.downloadLimit = config['downloadLimit']
         self.listOfPodcasts = config['listOfPodcasts']
+
+  def add(self, url, shortname):
+    self.load()
+    if shortname in self.listOfPodcasts:
+      print '"{}" already in list of podcasts'.format(shortname)
+      print 'check pyCast show "{}"'.format(shortname)
+    else:
+      """
+      1) check for validity of feed
+      2) save to dist
+      3) run podcast Update
+      """
+      self.listOfPodcasts[shortname] = url
+      self.dump()
+      print "{}:{} added to list of podcasts".format(shortname, url)
+
+  def remove(self, shortname):
+    self.load()
+    if not shortname in self.listOfPodcasts:
+      print '"{}" not in list of podcasts'.format(shortname)
+    else:
+      del self.listOfPodcasts[shortname]
+      print '"{}" removed from list of podcasts'.format(shortname)
+      self.dump()
+
+  def list(self):
+    self.load()
+    for i in self.listOfPodcasts:
+      print i, ":", self.listOfPodcasts[i]
+
+
