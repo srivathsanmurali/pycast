@@ -2,7 +2,7 @@ import feedparser
 from collections import namedtuple
 
 """ Episode - stores information about each episode"""
-Episode = namedtuple ("Episode", "title, notes, url, pubDate, played, curPosition")
+Episode = namedtuple ("Episode", "title, notes, url, pubDate, played, curPosition, downloaded")
 
 class Podcast:
     """ Podcast - a simple class that represents the data for each podcast

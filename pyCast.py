@@ -3,10 +3,10 @@
     Author: srivathsan (sri@vathsan.com)
 
 Usage:
-    pyCast.py podcast add <url>
-    pyCast.py podcast list
-    pyCast.py podcast show <name>
-    pyCast.py podcast play
+    pyCast.py add <url> <shortname>
+    pyCast.py list
+    pyCast.py show <shortname>
+    pyCast.py play
     pyCast.py -h | --help
     pyCast.py -v | --version
 
@@ -17,9 +17,7 @@ Options:
 """
 
 from docopt import docopt
-from core import podcast
+from podcast import Podcast
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="pyCast 0.0.1")
-
-    #if arguments['podcast'] and arguments['add']:
