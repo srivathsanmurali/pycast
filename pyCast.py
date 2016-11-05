@@ -7,7 +7,8 @@ Usage:
     pyCast remove <shortname>
     pyCast list
     pyCast show <shortname>
-    pyCast play
+    pyCast play <shortname> <epId>
+    pyCast update
     pyCast -h | --help
     pyCast -v | --version
 
@@ -24,8 +25,12 @@ if __name__ == "__main__":
     args = docopt(__doc__, version="pyCast 0.0.1")
     pm = PodcastManager()
     if args['add'] and args['<shortname>'] and args['<url>']:
-        pm.add(args['<url>'], args['<shortname>'])
+        pm.add(str(args['<url>']), str(args['<shortname>']))
     elif args['remove'] and args['<shortname>']:
-        pm.remove(args['<shortname>'])
+        pm.remove(str(args['<shortname>']))
     elif args['list']:
         pm.list()
+    elif args['update']:
+        pm.update()
+    elif args['show'] and args['<shortname>']:
+        pm.show(str(args['<shortname>']))

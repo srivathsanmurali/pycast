@@ -1,6 +1,7 @@
 from podcast import Podcast
 import yaml
 import os
+import shutil
 
 class PodcastManager:
   """
@@ -14,6 +15,9 @@ class PodcastManager:
     self.configFile     = os.path.join(self.rootDir, 'config.yml')
     self.downloadLimit  = 5
     self.listOfPodcasts = {}
+    if not os.path.exists(self.rootDir):
+        os.makedirs(self.rootDir)
+        self.dump()
 
   def dump(self):
     if not os.path.exists(self.rootDir):
@@ -42,9 +46,14 @@ class PodcastManager:
       2) save to dist
       3) run podcast Update
       """
-      self.listOfPodcasts[shortname] = url
-      self.dump()
-      print "{}:{} added to list of podcasts".format(shortname, url)
+      newPodcast = Podcast(url, self.rootDir, shortname)
+      if newPodcast.updateFeed():
+        self.listOfPodcasts[shortname] = url
+        print "{}:{} added to list of podcasts".format(shortname, url)
+        self.dump()
+      else:
+        del newPodcast
+        print "{}:{} cound not be added.".format(shortname, url)
 
   def remove(self, shortname):
     self.load()
@@ -52,6 +61,8 @@ class PodcastManager:
       print '"{}" not in list of podcasts'.format(shortname)
     else:
       del self.listOfPodcasts[shortname]
+      p = Podcast('',self.rootDir, shortname)
+      shutil.rmtree(p.podcastDir)
       print '"{}" removed from list of podcasts'.format(shortname)
       self.dump()
 
@@ -59,5 +70,21 @@ class PodcastManager:
     self.load()
     for i in self.listOfPodcasts:
       print i, ":", self.listOfPodcasts[i]
+
+  def update(self):
+    self.load()
+    for i in self.listOfPodcasts:
+      print 'updating "{}".'.format(i)
+      p = Podcast('', self.rootDir, i)
+      p.updateFeed()
+
+  def show(self, shortname):
+    self.load()
+    if shortname not in self.listOfPodcasts:
+      print '"{}" not in list of podcasts'.format(shortname)
+    else:
+      p = Podcast('', self.rootDir, shortname)
+      p.showEpisodes()
+
 
 
