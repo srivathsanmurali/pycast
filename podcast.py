@@ -2,9 +2,11 @@ import feedparser
 from collections import namedtuple
 import yaml
 import os
+import urllib
 
 """ Episode - stores information about each episode"""
-Episode = namedtuple ("Episode", "title, notes, url, pubDate, played, curPosition, downloaded")
+Episode = namedtuple ("Episode", "title, notes, url, pubDate, played, \
+                    curPosition, downloaded")
 
 class Podcast:
     """ Podcast - a simple class that represents the data for each podcast
@@ -54,14 +56,11 @@ class Podcast:
         if len(podFeed.entries) == 0:
             print "No episodes yet"
         else:
-            os.remove(self.podcastFile)
-            self.episodes.clear()
-            self.numEpisodes = 0
-            for eps in reversed(podFeed.entries):
+            for epId, eps in enumerate(reversed(podFeed.entries)):
                 """ also check if the enclosure
                     contains a mp3 url"""
-                if len(eps.enclosures) >0:
-                    self.episodes[self.numEpisodes] = Episode(eps.title, eps.description, eps.enclosures[0].url, eps.updated_parsed, False, 0.0, 0)
+                if len(eps.enclosures) >0 and epId not in self.episodes:
+                    self.episodes[epId] = Episode(eps.title, eps.description, eps.enclosures[0].url, eps.updated_parsed, False, 0.0, True)
                     self.numEpisodes = self.numEpisodes + 1
         self.dump()
         return True
@@ -92,7 +91,16 @@ class Podcast:
         else:
             return self.episodes
 
-    """ def saveToDist(self): """
+    def download(self, epId):
+        epName = os.path.join(self.podcastDir, ''.join([str(epId), '.mp3']))
+        if os.path.exists (epName):
+            print '{} already downloaded.'.format(epName)
+        else:
+            self.load()
+            ep = self.episodes[epId]
+            ep.downloaded = True
+            urllib.urlretrieve(ep.url, epName)
+            print '{} downloaded.'.format(epName)
 
 def main():
     swak = Podcast("http://feeds.feedburner.com/swak", '.', 'swak')

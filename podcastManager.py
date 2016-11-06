@@ -86,5 +86,13 @@ class PodcastManager:
       p = Podcast('', self.rootDir, shortname)
       p.showEpisodes()
 
+  def download(self, shortname, epId):
+    self.load()
+    if shortname not in self.listOfPodcasts:
+      print '"{}" not in list of podcasts'.format(shortname)
+    else:
+      p = Podcast('', self.rootDir, shortname)
+      p.download(epId)
+
 
 

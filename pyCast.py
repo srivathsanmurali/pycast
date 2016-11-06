@@ -7,7 +7,7 @@ Usage:
     pyCast remove <shortname>
     pyCast list
     pyCast show <shortname>
-    pyCast play <shortname> <epId>
+    pyCast download <shortname> <epId>
     pyCast update
     pyCast -h | --help
     pyCast -v | --version
@@ -34,3 +34,5 @@ if __name__ == "__main__":
         pm.update()
     elif args['show'] and args['<shortname>']:
         pm.show(str(args['<shortname>']))
+    elif args['download'] and args['<shortname>'] and args['<epId>']:
+        pm.download(str(args['<shortname>']), int(args['<epId>']))
